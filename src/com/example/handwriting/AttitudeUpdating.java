@@ -533,9 +533,12 @@ public class AttitudeUpdating{
 			pregryz = tmpgryz;
 			pretimegry = rotationTime;
 
-			preRotationx = (calRotationx + tmpRotationx) / 2;
-			preRotationy = (calRotationy + tmpRotationy) / 2;
-			preRotationz = (calRotationz + tmpRotationz) / 2;
+//			preRotationx = (calRotationx + tmpRotationx) / 2;
+//			preRotationy = (calRotationy + tmpRotationy) / 2;
+//			preRotationz = (calRotationz + tmpRotationz) / 2;
+			preRotationx = calRotationx ;
+			preRotationy = calRotationy ;
+			preRotationz = calRotationz ;
 
 			float[][] bufferacc = {{tmpaccx, 0, 0}, {tmpaccy, 0, 0},
 					{tmpaccz, 0, 0}};// 前面三个是加速度

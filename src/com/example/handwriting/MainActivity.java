@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressLint("InlinedApi")
 public class MainActivity extends Activity implements OnTouchListener{
 	private SensorManager mySensorManager; // SensorManager对象引用
 	private Sensor myaccelerometer; // 加速度传感器（包括重力）
