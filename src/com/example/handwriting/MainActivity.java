@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +31,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnTouchListener{
 	private SensorManager mySensorManager; // SensorManager对象引用
-	private Sensor myaccelerometer; // 加速度传感器（包括重力）
+	private Sensor myaccelerometer; // 加速度传感器
 	private Sensor myrotationSensor;
 	private Sensor mygyrSensor;
 	private float gyrd[]=new float[3]; // 用于存放最新的陀螺仪数据
@@ -60,7 +62,7 @@ public class MainActivity extends Activity implements OnTouchListener{
 		// 获得SensorManager对象
 		mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		// 获取缺省的线性加速度传感器
-		myaccelerometer = mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		myaccelerometer = mySensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 		myrotationSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		mygyrSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 		path=this.getExternalFilesDir(null).toString();
@@ -115,7 +117,7 @@ public class MainActivity extends Activity implements OnTouchListener{
 			time = time - time / 10000000 * 10000000;
 			float[] values = event.values;// 获取传感器的三个数据
 			// 陀螺仪传感器变化
-			if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+			if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
 
 				accd[0] = Math.abs(values[0]) > 0.2 ? values[0] : 0;
 				accd[1] = Math.abs(values[1]) > 0.2 ? values[1] : 0;
@@ -173,8 +175,12 @@ public class MainActivity extends Activity implements OnTouchListener{
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				try{
-					new FeatureExtract(realString+"Three").ExtractDone();
-					new FeatureExtract(realString+"One").ExtractDone();
+					ArrayList<float[]> floatcollectArray = new ArrayList<float[]>();
+					MovementClassfied movementClassfied=new MovementClassfied(realString+"Three", 50, 10);
+					floatcollectArray=movementClassfied.Data_splited_return();
+					translatedata.printFloatArrarylist(floatcollectArray, path+"/DataClassfied.txt", movementClassfied.num);
+					new FeatureExtract(path+"/DataClassfied.txt").ExtractDone();
+//					new FeatureExtract(realString+"One").ExtractDone();
 //					new FeatureExtract(realString).ExtractDone();
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -219,7 +225,7 @@ public class MainActivity extends Activity implements OnTouchListener{
 							// TODO Auto-generated method stub
 							try {
 								Aup.ThreeUpdating();
-								Aup.OneUpdating();
+//								Aup.OneUpdating();
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

@@ -28,18 +28,19 @@ public class FeatureExtract {
 		BufferedReader intputStream = new BufferedReader(new FileReader(handlefileString));
 		FileOutputStream outputStream = new FileOutputStream(handlefileString+"Feature", true); // 定义传感器数据的输出流
 		String s = intputStream.readLine();// 清楚第一个标量号
-		if(s==null||s.length()!=1)return false;
-		sclass=s;
-		s = s + "\n";
-		byte[] buffer = new byte[s.length() * 2];
-		buffer = s.getBytes();
-		outputStream.write(buffer);
+		boolean isint=translatedata.isint(Float.valueOf(s));
+		if(s==null||!isint)return false;
+		sclass=String.valueOf((int)Float.valueOf(s).floatValue());
+//		s = s + "\n";
+//		byte[] buffer = new byte[s.length() * 2];
+//		buffer = s.getBytes();
+//		outputStream.write(buffer);
 		// 读出后写回去
 		String StringBuffer[]=null;
-		float[] FloatBuffer=new float[8];
+		float[] FloatBuffer=new float[12];
 		while((s=intputStream.readLine())!=null){
 
-		s =intputStream.readLine();
+//		s =intputStream.readLine();
 		try {
 			StringBuffer= s.split(" ");
 		} catch (Exception e) {
@@ -109,7 +110,7 @@ public class FeatureExtract {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		new File(handlefileString).delete();
 		return true;
 	}
 	//加速度平均值
